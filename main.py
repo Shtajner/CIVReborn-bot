@@ -51,8 +51,6 @@ async def on_ready():
         for member in guild.members:
             if sql.execute(f"SELECT id FROM users where id={member.id}").fetchone() is None:
                 sql.execute(f"""INSERT INTO users VALUES ({member.id}, 0, 1000, 0, 0)""")
-            else:
-                pass
             db.commit()
             for role_name in roles_names:
                 role = discord.utils.get(member.guild.roles, name = role_name)
@@ -88,12 +86,12 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    sql.execute(f"SELECT id FROM users where id={member.id}")                                                                #все также, существует ли участник в БД
-    if sql.fetchone() is None:                                                                                                 #Если не существует
-        sql.execute("INSERT INTO users VALUES ({}, 0, 1000, 0, 0)".format(member.id))       #вводит все данные об участнике в БД
-    else:                                                                                                                       #Если существует
+    sql.execute(f"SELECT id FROM users where id={member.id}")                                               #Все также, существует ли участник в БД.
+    if sql.fetchone() is None:                                                                              #Если не существует,
+        sql.execute("INSERT INTO users VALUES ({}, 0, 1000, 0, 0)".format(member.id))                       #вводит все данные об участнике в БД
+    else:                                                                                                   #Иначе (если существует), 
         pass
-    db.commit()         #применение изменений в БД
+    db.commit()                                                                                             #применение изменений в БД
 
 
 @bot.command()
