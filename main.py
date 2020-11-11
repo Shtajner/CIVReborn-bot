@@ -19,17 +19,17 @@ sql = db.cursor()
 
 
 sql.execute("""CREATE TABLE IF NOT EXISTS "users" (
-    "id"    INT,
+    "id"        INT,
     "games"     INT,
     "mmr"       INT,
-    "wins"       INT,
+    "wins"      INT,
     "loses"     INT 
 )""")
 
 db.commit()
 
 sql.execute("""CREATE TABLE IF NOT EXISTS "reporting" (
-    "game_id"    INT,
+    "game_id"   INT,
     "id"        INT,
     "delta"     INT
 )""")
@@ -37,16 +37,16 @@ sql.execute("""CREATE TABLE IF NOT EXISTS "reporting" (
 db.commit()
 
 sql.execute("""CREATE TABLE IF NOT EXISTS "clans" (
-    "name_id"    INT,
+    "name_id"           INT,
     "members_id"        INT,
-    "description"     TEXT,
-    "URL"   TEXT
+    "description"       TEXT,
+    "URL"               TEXT
 )""")
 
 @bot.event
 async def on_ready():
     print("Bot Has been runned")            # сообщение о готовности
-    roles_names = ["1", "2", "3", "4", "5", "6", "7", "8"]
+    roles_names = ["⚔️ Поселенец", "⚔️ Вождь", "⚔️ Военачальник", "⚔️ Князь", "⚔️ Король", "⚔️ Император", "⚔️ Бессмертный", "⚔️ Божество"]
     for guild in bot.guilds:
         for member in guild.members:
             if sql.execute(f"SELECT id FROM users where id={member.id}").fetchone() is None:
@@ -89,7 +89,7 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     sql.execute(f"SELECT id FROM users where id={member.id}")                                                                #все также, существует ли участник в БД
-    if sql.fetchone()==None:                                                                                                 #Если не существует
+    if sql.fetchone() is None:                                                                                                 #Если не существует
         sql.execute("INSERT INTO users VALUES ({}, 0, 1000, 0, 0)".format(member.id))       #вводит все данные об участнике в БД
     else:                                                                                                                       #Если существует
         pass
